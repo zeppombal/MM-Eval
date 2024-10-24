@@ -20,8 +20,33 @@ git clone https://github.com/guijinSON/MM-Eval
 cd MM-Eval
 cd reward-bench
 
-pip install rewardbench
-pip install rewardbench[generative]
+pip install -e .
+```
+:warning: `pip install reward-bench` will not work
+
+### Evaluating Reward Models
+Run this for evaluation on MM-Eval
+```bash
+python scripts/run_rm.py --model=prometheus-eval/MM-Mistral-7B-RM --custom_dataset_path prometheus-eval/MM-Eval
+```
+Ensure your model fits on the GPU. If not, reduce the batch size:
+
+```bash
+--batch_size 1
 ```
 
-### Installation
+For some models, you may also need to add the following flag:
+
+```bash
+--trust_remote_code
+```
+
+### Evaluating Proprietary Models
+First, add your OpenAI API key:
+```bash
+export OPENAI_API_KEY="{your-api-key}"
+```
+Then, run this for evaluation on MM-Eval
+```bash
+python scripts/run_generative.py --model=gpt-4o-mini-2024-07-18 --custom_dataset_path prometheus-eval/MM-Eval
+```
