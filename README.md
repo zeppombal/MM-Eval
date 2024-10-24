@@ -12,7 +12,7 @@
 > In this work, we minimize the inclusion of translated samples, as mere translation may alter existing preferences due to translation errors. Instead, we increase the proportion of linguistically and culturally related instances. Consequently, translated samples are only included in the Safety subset. Additionally, we enrich the dataset with a Linguistics subset designed to evaluate the judge model's ability to comprehend the linguistic characteristics of various languages accurately. Furthermore, we incorporate hand-crafted culturally related prompts in the Language Hallucination subset. If you are interested, please look into [MMQA (Multilingual, Multicultural Question Answering)](https://huggingface.co/datasets/prometheus-eval/MMQA).
 
 ## How to Use.
-In general, we leverage the codebase from Reward-Bench for our experiments. You can replicate our experiments by following the process outlined below.
+In general, we leverage the codebase from [Reward-Bench](https://github.com/allenai/reward-bench) for our experiments. You can replicate our experiments by following the process outlined below.
 
 ### Installation
 ```python
@@ -49,4 +49,12 @@ export OPENAI_API_KEY="{your-api-key}"
 Then, run this for evaluation on MM-Eval
 ```bash
 python scripts/run_generative.py --model=gpt-4o-mini-2024-07-18 --custom_dataset_path prometheus-eval/MM-Eval
+```
+
+### Evaluating Prometheus2.0 and Self-Taught Evaluator
+For [Prometheus-2](https://huggingface.co/prometheus-eval/prometheus-7b-v2.0) and [Self-Taught Evaluator](https://huggingface.co/facebook/Self-taught-evaluator-llama3.1-70B) we use their original implementations instead of the Reward-Bench codebase. Tutorials to replicate the experiments will be added shortly.
+
+## How to Cite
+```
+[TBD]
 ```
