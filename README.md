@@ -1,9 +1,11 @@
  # Multilingual Meta-EVALuation benchmark (MM-Eval)
 
 <p align="center">
-<b><a href="https://huggingface.co/datasets/prometheus-eval/MM-Eval">🤗 Dataset</a></b>
+<b><a href="https://huggingface.co/datasets/prometheus-eval/MM-Eval">🤗 MM-Eval</a></b>
 |
 <b><a href="https://arxiv.org/abs/2410.15522">📄Paper</a></b>
+|
+<b><a href="https://huggingface.co/datasets/prometheus-eval/MMQA">🤗 MMQA</a></b>
 </p>
 
 **MM-Eval** is a multilingual meta-evaluation benchmark consisting of five core subsets—Chat, Reasoning, Safety, Language Hallucination, and Linguistics—spanning 18 languages and a Language Resource subset spanning 122 languages for a broader analysis of language effects. 
