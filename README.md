@@ -60,6 +60,9 @@ python scripts/run_generative.py --model=gpt-4o-mini-2024-07-18 --custom_dataset
 ### Evaluating Prometheus2.0 and Self-Taught Evaluator
 For [Prometheus-2](https://huggingface.co/prometheus-eval/prometheus-7b-v2.0) and [Self-Taught Evaluator](https://huggingface.co/facebook/Self-taught-evaluator-llama3.1-70B) we use their original implementations instead of the Reward-Bench codebase. Tutorials to replicate the experiments will be added shortly.
 
+### Analysis
+Notebooks for replicating the experiment and plot in Section 6. Analysis is in the ```analysis``` folder.
+
 ## How to Cite
 ```
 [TBD]
