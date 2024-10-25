@@ -18,7 +18,7 @@
 ### This is a fork of the [RewardBench codebase](https://github.com/allenai/reward-bench).
 If you use our code in your work, please consider citing both [our work](https://arxiv.org/abs/2410.15522) and [RewardBench](https://arxiv.org/abs/2403.13787). Many thanks to the original authors of RewardBench. 
 
-## How to Use.
+## How to Use
 You can replicate our experiments by following the process outlined below.
 
 ### Installation
