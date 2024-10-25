@@ -310,9 +310,9 @@ def load_eval_dataset(
     if custom_dataset_path:
         if ".json" in custom_dataset_path:
             raw_dataset = load_dataset(
-                "json", data_files=custom_dataset_path)['train']
+                "json", data_files=custom_dataset_path)['test']
         else:
-            raw_dataset = load_dataset(custom_dataset_path)['train']
+            raw_dataset = load_dataset(custom_dataset_path)['test']
     else:
         if core_set:
             raw_dataset = load_dataset(CORE_EVAL_SET, split="filtered")
