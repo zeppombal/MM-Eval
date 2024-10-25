@@ -5,7 +5,7 @@
 <p align="center">
 <b><a href="https://huggingface.co/datasets/prometheus-eval/MM-Eval">🤗 MM-Eval</a></b>
 |
-<b><a href="https://arxiv.org/abs/2410.15522">📄Paper</a></b>
+<b><a href="https://arxiv.org/abs/2410.17578">📄Paper</a></b>
 |
 <b><a href="https://huggingface.co/datasets/prometheus-eval/MMQA">🤗 MMQA</a></b>
 </p>
