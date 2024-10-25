@@ -94,6 +94,10 @@ def get_args():
         "--custom_dataset_path",
         type=str,
     )
+    parser.add_argument(
+        "--lang_res_set",
+        action="store_true",
+    )
     args = parser.parse_args()
     args.torch_dtype = torch_dtype_mapping(args.torch_dtype)
     return args
@@ -184,6 +188,8 @@ def main():
     if not custom_dialogue:  # not needed for PairRM / SteamSHP
         # copied from Starling, but few samples are above context length
         tokenizer.truncation_side = "left"
+    if args.lang_res_set:
+        logger.info("*** Only evaluating on the Language Resource subset ***")
     dataset, subsets = load_eval_dataset(
         custom_dataset_path=args.custom_dataset_path,
         core_set=not args.pref_sets,
@@ -192,6 +198,7 @@ def main():
         tokenizer=tokenizer,
         logger=logger,
         keep_columns=["text_chosen", "text_rejected", "id"],
+        lang_res_set=args.lang_res_set,
     )
     # copy id for saving, then remove
     ids = dataset["id"]

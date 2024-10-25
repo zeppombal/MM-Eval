@@ -65,12 +65,15 @@ def get_args():
         required=True,
         help="name of OpenAI model to use (TODO add more providers/models)",
     )
-    parser.add_argument("--chat_template", type=str, default=None, help="fastchat chat template (optional)")
+    parser.add_argument("--chat_template", type=str,
+                        default=None, help="fastchat chat template (optional)")
     parser.add_argument(
         "--trust_remote_code", action="store_true", default=False, help="directly load model instead of pipeline"
     )
-    parser.add_argument("--num_gpus", type=int, default=1, help="number of gpus to use, for multi-node vllm")
-    parser.add_argument("--do_not_save", action="store_true", help="do not save results to hub (for debugging)")
+    parser.add_argument("--num_gpus", type=int, default=1,
+                        help="number of gpus to use, for multi-node vllm")
+    parser.add_argument("--do_not_save", action="store_true",
+                        help="do not save results to hub (for debugging)")
     parser.add_argument(
         "--pref_sets", action="store_true", help="run on common preference sets instead of our custom eval set"
     )
@@ -90,6 +93,10 @@ def get_args():
         "--custom_dataset_path",
         type=str,
     )
+    parser.add_argument(
+        "--lang_res_set",
+        action="store_true",
+    )
     args = parser.parse_args()
     return args
 
@@ -108,7 +115,8 @@ def main():
     log_level = logging.INFO
     logger.setLevel(log_level)
 
-    logger.info(f"Running reward model on {args.model} with chat template {args.chat_template}")
+    logger.info(
+        f"Running reward model on {args.model} with chat template {args.chat_template}")
 
     model_type = "Generative RM"
 
@@ -124,12 +132,14 @@ def main():
     if args.force_local:
         is_api_models = False
     else:
-        is_api_models = isinstance(args.model, list) or args.model in API_MODEL_LIST
+        is_api_models = isinstance(
+            args.model, list) or args.model in API_MODEL_LIST
 
     # if model isn't API, load via vllm
     if not is_api_models:
         # load model
-        model = LLM(args.model, trust_remote_code=args.trust_remote_code, tensor_parallel_size=args.num_gpus)
+        model = LLM(args.model, trust_remote_code=args.trust_remote_code,
+                    tensor_parallel_size=args.num_gpus)
         tokenizer = AutoTokenizer.from_pretrained(args.model)
         if "Llama-3" in args.model or "llama3-8b" in args.model:
             stop_token_ids = [128009]
@@ -159,15 +169,19 @@ def main():
     # Load dataset
     ############################
     logger.info("*** Load dataset ***")
+    if args.lang_res_set:
+        logger.info("*** Only evaluating on the Language Resource subset ***")
     dataset, subsets = load_eval_dataset(
         custom_dataset_path=args.custom_dataset_path,
         core_set=not args.pref_sets,
-        conv=get_conv_template("raw"),  # not used in this script (handled later)
+        # not used in this script (handled later)
+        conv=get_conv_template("raw"),
         custom_dialogue_formatting=True,  # handle formatting later
         tokenizer=None,
         logger=logger,
         keep_columns=["text_chosen", "text_rejected", "id"],
         max_turns=4,
+        lang_res_set=args.lang_res_set,
     )
 
     # copy id for saving, then remove
@@ -186,8 +200,10 @@ def main():
         ############################
         def update_progress_bar(done, total):
             # Simple text-based progress bar
-            progress = int(50 * done / total)  # Calculate progress (50 chars width)
-            sys.stdout.write("\r[{}{}] {}/{}".format("#" * progress, "." * (50 - progress), done, total))
+            # Calculate progress (50 chars width)
+            progress = int(50 * done / total)
+            sys.stdout.write(
+                "\r[{}{}] {}/{}".format("#" * progress, "." * (50 - progress), done, total))
             sys.stdout.flush()
 
         def get_judgement(batch, debug=args.debug):
@@ -240,7 +256,8 @@ def main():
 
             with ThreadPoolExecutor(max_workers=args.num_threads) as executor:
                 # Submit all tasks and hold their futures in a list
-                future_to_index = {executor.submit(get_judgement, x): i for i, x in enumerate(dataset)}
+                future_to_index = {executor.submit(
+                    get_judgement, x): i for i, x in enumerate(dataset)}
 
                 # As tasks complete, update progress and store results in the original order
                 for future in as_completed(future_to_index):
@@ -275,8 +292,10 @@ def main():
             if optional_chat_template is not None:
                 optional_chat_template.set_system_message(system_prompt)
                 optional_chat_template.messages = []
-                optional_chat_template.append_message(optional_chat_template.roles[0], user_prompt)
-                optional_chat_template.append_message(optional_chat_template.roles[1], None)
+                optional_chat_template.append_message(
+                    optional_chat_template.roles[0], user_prompt)
+                optional_chat_template.append_message(
+                    optional_chat_template.roles[1], None)
                 prompt = optional_chat_template.get_prompt()
             elif model_modifier:
                 messages = [
@@ -286,7 +305,8 @@ def main():
                     },
                     {"role": "user", "content": user_prompt},
                 ]
-                prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+                prompt = tokenizer.apply_chat_template(
+                    messages, tokenize=False, add_generation_prompt=True)
             batch["text"] = prompt
             batch["is_shuffled"] = is_shuffled
             return batch
@@ -296,7 +316,8 @@ def main():
             chat_template = get_conv_template(args.chat_template)
         else:
             chat_template = None
-        dataset_prompts = dataset.map(format_judgements, fn_kwargs={"optional_chat_template": chat_template})
+        dataset_prompts = dataset.map(format_judgements, fn_kwargs={
+                                      "optional_chat_template": chat_template})
 
         # collect texts of dataset in list
         prompts = dataset_prompts["text"]
@@ -325,7 +346,8 @@ def main():
             else:  # if "error"
                 return 0.5  # effectively a tie
 
-        results = [process_shuffled(w, s) for w, s in zip(winners, is_shuffled)]
+        results = [process_shuffled(w, s)
+                   for w, s in zip(winners, is_shuffled)]
 
     ############################
     # Print & process results
@@ -360,7 +382,8 @@ def main():
     # print per subset and log into results_grouped file
     present_subsets = np.unique(subsets)
     for subset in present_subsets:
-        subset_dataset = out_dataset.filter(lambda example: example["subset"] == subset)
+        subset_dataset = out_dataset.filter(
+            lambda example: example["subset"] == subset)
         num_correct = sum(subset_dataset["results"])
         num_total = len(subset_dataset["results"])
         print(f"{subset}: {num_correct}/{num_total} ({num_correct/num_total})")
@@ -368,7 +391,8 @@ def main():
 
     # log leaderboard aggregated results
     if not args.pref_sets:
-        results_leaderboard = calculate_scores_per_section(EXAMPLE_COUNTS, SUBSET_MAPPING, results_grouped)
+        results_leaderboard = calculate_scores_per_section(
+            EXAMPLE_COUNTS, SUBSET_MAPPING, results_grouped)
         print(results_leaderboard)
 
     ############################
@@ -391,7 +415,8 @@ def main():
     # if not args.do_not_save:
     #     logger.info(f"Uploaded reward model results to {results_url}")
 
-    logger.info("Not uploading chosen-rejected text with scores due to model compatibility")
+    logger.info(
+        "Not uploading chosen-rejected text with scores due to model compatibility")
 
     ############################
     # Save per-prompt results to hub
@@ -403,7 +428,8 @@ def main():
 
     sub_path_scores = "eval-set-scores/" if not args.pref_sets else "pref-sets-scores/"
 
-    scores_url = save_to_hub(scores_dict, model_name, sub_path_scores, args.debug, local_only=True)
+    scores_url = save_to_hub(scores_dict, model_name,
+                             sub_path_scores, args.debug, local_only=True)
     logger.info(f"Uploading chosen-rejected text with scores to {scores_url}")
 
 

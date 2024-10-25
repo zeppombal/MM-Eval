@@ -288,6 +288,7 @@ def load_eval_dataset(
     keep_columns: List[str] = ["text_chosen", "text_rejected", "id"],
     max_turns: int = None,
     custom_dataset_path: str = None,
+    lang_res_set: bool = False,
 ) -> tuple[Dataset, list[str]]:
     """
     Loads either the core eval set for HERM or the existing preference data test sets.
@@ -313,6 +314,14 @@ def load_eval_dataset(
                 "json", data_files=custom_dataset_path)['test']
         else:
             raw_dataset = load_dataset(custom_dataset_path)['test']
+
+            def is_lang_res(example):
+                return example['subset'] == 'lang_res'
+
+            if lang_res_set:
+                raw_dataset = raw_dataset.filter(is_lang_res)
+            else:
+                raw_dataset = raw_dataset.filter(lambda x: not is_lang_res(x))
     else:
         if core_set:
             raw_dataset = load_dataset(CORE_EVAL_SET, split="filtered")
