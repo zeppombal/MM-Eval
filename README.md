@@ -1,5 +1,7 @@
 # Multilingual Meta-EVALuation benchmark (MM-Eval)
 
+
+
 <p align="center">
 <b><a href="https://huggingface.co/datasets/prometheus-eval/MM-Eval">🤗 MM-Eval</a></b>
 |
@@ -13,8 +15,11 @@
 > **Design Choice**  
 > In this work, we minimize the inclusion of translated samples, as mere translation may alter existing preferences due to translation errors. Instead, we increase the proportion of linguistically and culturally related instances. Consequently, translated samples are only included in the Safety subset. Additionally, we enrich the dataset with a Linguistics subset designed to evaluate the judge model's ability to comprehend the linguistic characteristics of various languages accurately. Furthermore, we incorporate hand-crafted culturally related prompts in the Language Hallucination subset. If you are interested, please look into [MMQA (Multilingual, Multicultural Question Answering)](https://huggingface.co/datasets/prometheus-eval/MMQA).
 
+### This is a fork of the [RewardBench codebase](https://github.com/allenai/reward-bench).
+If you use our code in your work, please consider citing both [our work](https://arxiv.org/abs/2410.15522) and [RewardBench](https://arxiv.org/abs/2403.13787). Many thanks to the original authors of RewardBench. 
+
 ## How to Use.
-In general, we leverage the codebase from [Reward-Bench](https://github.com/allenai/reward-bench) for our experiments. You can replicate our experiments by following the process outlined below.
+You can replicate our experiments by following the process outlined below.
 
 ### Installation
 ```python
