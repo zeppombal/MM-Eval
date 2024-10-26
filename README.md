@@ -65,5 +65,10 @@ Notebooks for replicating the experiment and plot in Section 6. Analysis is in t
 
 ## How to Cite
 ```
-[TBD]
+@article{son2024mm,
+  title={MM-Eval: A Multilingual Meta-Evaluation Benchmark for LLM-as-a-Judge and Reward Models},
+  author={Son, Guijin and Yoon, Dongkeun and Suk, Juyoung and Aula-Blasco, Javier and Aslan, Mano and Kim, Vu Trong and Islam, Shayekh Bin and Prats-Cristi{\`a}, Jaume and Tormo-Ba{\~n}uelos, Luc{\'\i}a and Kim, Seungone},
+  journal={arXiv preprint arXiv:2410.17578},
+  year={2024}
+}
 ```
