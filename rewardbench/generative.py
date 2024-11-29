@@ -148,25 +148,28 @@ MTBENCH_MULTI_V2 = {
 
 # Prometheus prompts taken from
 # https://github.com/prometheus-eval/prometheus-eval/blob/becd223d624896a5383e5dd9b766d740261a80f2/eval/prompts.py
-RELATIVE_PROMPT = """
-###Task Description:
-An instruction (might include an Input inside it), a response to evaluate, and a score rubric representing a evaluation criteria are given.
-1. Write a detailed feedback that assess the quality of two responses strictly based on the given score rubric, not evaluating in general.
-2. After writing a feedback, choose a better response between Response A and Response B. You should refer to the score rubric.
-3. The output format should look as follows: "Feedback: (write a feedback for criteria) [RESULT] (A or B)"
-4. Please do not generate any other opening, closing, and explanations.
+RELATIVE_PROMPT = """###Task Description:
+An instruction (might include an Input inside it), two responses to evaluate (denoted as Response A and Response B), a reference answer, and an evaluation criteria are given.
+1. Write a detailed feedback that assess the quality of the two responses strictly based on the given evaluation criteria, not evaluating in general.
+2. Make comparisons between Response A, Response B, and the Reference Answer. Instead of examining Response A and Response B separately, go straight to the point and mention about the commonalities and differences between them.
+3. After writing the feedback, indicate the better response, either "A" or "B".
+4. The output format should look as follows: "Feedback: (write a feedback for criteria) [RESULT] (Either "A" or "B")"
+5. Please do not generate any other opening, closing, and explanations.
 
-###Instruction:
+###The instruction to evaluate:
 {orig_instruction}
 
-###Response A:
-{response_A}
+###Response A to evaluate:
+{orig_response_A}
 
-###Response B:
-{response_B}
+###Response B to evaluate:
+{orig_response_B}
 
-###Score Rubric:
-{score_rubric}
+###Reference Answer:
+{orig_reference_answer}
+
+###Evaluation Criteria:
+{orig_criteria}
 
 ###Feedback: """
 
