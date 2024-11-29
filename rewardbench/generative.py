@@ -160,16 +160,13 @@ An instruction (might include an Input inside it), two responses to evaluate (de
 {orig_instruction}
 
 ###Response A to evaluate:
-{orig_response_A}
+{response_A}
 
 ###Response B to evaluate:
-{orig_response_B}
-
-###Reference Answer:
-{orig_reference_answer}
+{response_B}
 
 ###Evaluation Criteria:
-{orig_criteria}
+{score_rubric}
 
 ###Feedback: """
 
